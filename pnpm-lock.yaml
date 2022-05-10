@@ -16,6 +16,7 @@ importers:
     specifiers:
       '@types/inquirer': ^8.2.1
       applescript-utils: ^0.1.20
+      commander: ^9.2.0
       execa: ^6.1.0
       inquirer: ^8.2.4
       inquirer-press-to-continue: ^1.1.2
@@ -26,6 +27,7 @@ importers:
       vitest: latest
     dependencies:
       applescript-utils: 0.1.20
+      commander: 9.2.0
       inquirer: 8.2.4
       inquirer-press-to-continue: 1.1.2_inquirer@8.2.4
       just-zip-it: 3.0.2
@@ -1357,7 +1359,6 @@ packages:
   /commander/9.2.0:
     resolution: {integrity: sha512-e2i4wANQiSXgnrBlIatyHtP1odfUp0BbV5Y5nEGbxtIrStkEOAAzCUirvLBNXHLr7kwLvJl6V+4V3XV9x7Wd9w==}
     engines: {node: ^12.20.0 || >=14}
-    dev: true
 
   /commondir/1.0.1:
     resolution: {integrity: sha1-3dgA2gxmEnOTzKWVDqloo6rxJTs=}
