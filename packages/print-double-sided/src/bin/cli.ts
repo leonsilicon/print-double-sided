@@ -17,11 +17,14 @@ inquirer.registerPrompt('press-to-continue', PressToContinue);
 
 program
 	.showHelpAfterError()
-	.argument('<input-file>', 'the path to the file to print')
+	.argument('[input-file]', 'the path to the file to print')
 	.parse();
 
-const filePath = program.args[0]!;
-execaSync('open', [filePath]);
+const filePath = program.args[0];
+
+if (filePath !== undefined) {
+	execaSync('open', [filePath]);
+}
 
 await openPrintMenu();
 await inquirer.prompt({
