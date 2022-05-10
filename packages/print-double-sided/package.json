@@ -31,6 +31,8 @@
 		"vitest": "latest"
 	},
 	"dependencies": {
-		"applescript-utils": "^0.1.7"
+		"applescript-utils": "^0.1.10",
+		"nanoid-nice": "^1.0.1",
+		"outdent": "^0.8.0"
 	}
 }
