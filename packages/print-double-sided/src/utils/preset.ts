@@ -1,10 +1,15 @@
-import type { ElementReference } from 'applescript-utils';
+import type { BaseElementReference, ElementReference } from 'applescript-utils';
 import {
 	clickElement,
+	getElementProperties,
+	getElements,
+	getTableRows,
+	getTextFieldValue,
+	selectTableRow,
 	setTextFieldValue,
 	waitForElementMatch,
 } from 'applescript-utils';
-import { nanoid } from 'nanoid-nice';
+import zip from 'just-zip-it';
 
 export async function getPresetsDropdownElement(): Promise<ElementReference> {
 	const printerLabel = await waitForElementMatch('Preview', (element) =>
@@ -23,7 +28,11 @@ export async function getPresetsDropdownElement(): Promise<ElementReference> {
 	return printerDropdownElement;
 }
 
-export async function saveCurrentSettingsAsTemporaryPreset() {
+export async function saveCurrentSettingsAsPreset({
+	presetName,
+}: {
+	presetName: string;
+}) {
 	const presetsDropdownElement = await getPresetsDropdownElement();
 	await clickElement(presetsDropdownElement);
 
@@ -50,12 +59,99 @@ export async function saveCurrentSettingsAsTemporaryPreset() {
 		throw new Error('Preset name text input element was not found.');
 	}
 
-	const presetName = nanoid();
 	await setTextFieldValue(presetNameTextInputElement, presetName);
 
 	const okButton = await waitForElementMatch('Preview', (element) =>
 		element.path.some((part) => part.type === 'button' && part.name === 'OK')
 	);
+
+	await clickElement(okButton);
+}
+
+export async function selectPreset({ presetName }: { presetName: string }) {
+	const presetsDropdownElement = await getPresetsDropdownElement();
+	await clickElement(presetsDropdownElement);
+
+	const presetMenuItem = await waitForElementMatch('Preview', (element) =>
+		element.path.some(
+			(part) => part.type === 'menu item' && part.name === presetName
+		)
+	);
+	await clickElement(presetMenuItem);
+}
+
+export async function deletePreset({ presetName }: { presetName: string }) {
+	const presetsDropdownElement = await getPresetsDropdownElement();
+	await clickElement(presetsDropdownElement);
+
+	const showPresetsMenuItem = await waitForElementMatch('Preview', (element) =>
+		element.path.some(
+			(part) =>
+				part.type === 'menu item' && part.name.startsWith('Show Presets')
+		)
+	);
+	await clickElement(showPresetsMenuItem);
+
+	const presetsTable = await waitForElementMatch('Preview', (element) =>
+		element.path.some((part) => part.fullName === 'table 1')
+	);
+
+	const tableRows = await getTableRows(presetsTable);
+	const previewElements = await getElements('Preview');
+
+	let presetRow: BaseElementReference | undefined;
+	for (const tableRow of tableRows) {
+		const textField = previewElements.find(
+			(previewElement) =>
+				previewElement.pathString.includes(tableRow.pathString) &&
+				previewElement.path[0]?.type === 'text field'
+		);
+		if (textField === undefined) {
+			throw new Error(
+				`Could not find text field for row ${tableRow.path[0]!.fullName}`
+			);
+		}
+
+		// eslint-disable-next-line no-await-in-loop
+		const textFieldValue = await getTextFieldValue(textField);
+		if (textFieldValue === presetName) {
+			presetRow = tableRow;
+		}
+	}
+
+	if (presetRow === undefined) {
+		throw new Error(
+			`Could not find preset row matching preset name ${presetName}`
+		);
+	}
+
+	await selectTableRow({ row: presetRow });
+
+	const elements = await getElements('Preview');
+	const buttonElements = elements.filter(
+		(element) => element.path[0]?.type === 'button'
+	);
+	const buttonElementProperties = zip(
+		buttonElements,
+		await getElementProperties(buttonElements)
+	);
+
+	const removePresetButton = buttonElementProperties.find(
+		([_buttonElement, properties]) => properties.description === 'remove'
+	)?.[0];
+	if (removePresetButton === undefined) {
+		throw new Error('Could not find remove preset button.');
+	}
+
+	await clickElement(removePresetButton);
+
+	const okButton = elements.find((element) =>
+		element.path.some((part) => part.type === 'button' && part.name === 'OK')
+	);
+
+	if (okButton === undefined) {
+		throw new Error('Could not find OK button.');
+	}
 
 	await clickElement(okButton);
 }
