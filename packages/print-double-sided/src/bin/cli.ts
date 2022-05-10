@@ -10,7 +10,7 @@ import {
 	selectPreset,
 } from '~/utils/preset.js';
 import { clickPrintButton } from '~/utils/print-button.js';
-import { openPrintMenu } from '~/utils/print-menu.js';
+import { closePrintMenu, openPrintMenu } from '~/utils/print-menu.js';
 import { selectPrintOddEvenPages } from '~/utils/print-panel.js';
 
 inquirer.registerPrompt('press-to-continue', PressToContinue);
@@ -56,3 +56,4 @@ await clickPrintButton();
 // Cleanup
 await openPrintMenu();
 await deletePreset({ presetName: temporaryPresetName });
+await closePrintMenu();

@@ -1,4 +1,8 @@
-import { tellProcess } from 'applescript-utils';
+import {
+	clickElement,
+	tellProcess,
+	waitForElementMatch,
+} from 'applescript-utils';
 import { outdent } from 'outdent';
 
 export async function openPrintMenu() {
@@ -12,4 +16,14 @@ export async function openPrintMenu() {
 			end tell
 		`
 	);
+}
+
+export async function closePrintMenu() {
+	const cancelButton = await waitForElementMatch(
+		'Preview',
+		(element) =>
+			element.path[0]?.type === 'button' && element.path[0].name === 'Cancel'
+	);
+
+	await clickElement(cancelButton);
 }
