@@ -1,0 +1,7 @@
+{
+	"name": "@print-double-sided/scripts",
+	"type": "module",
+	"dependencies": {
+		"lion-system": "^1.3.25"
+	}
+}
