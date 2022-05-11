@@ -15,6 +15,7 @@
 	},
 	"scripts": {
 		"prepare": "lion-git-hooks",
+		"start": "pnpm --filter=print-double-sided run start",
 		"build": "pnpm recursive run build",
 		"test": "pnpm recursive run test",
 		"lint": "pnpm recursive run lint",
