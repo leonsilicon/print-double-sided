@@ -11,7 +11,10 @@ import {
 } from '~/utils/preset.js';
 import { clickPrintButton } from '~/utils/print-button.js';
 import { closePrintMenu, openPrintMenu } from '~/utils/print-menu.js';
-import { selectPrintOddEvenPages } from '~/utils/print-panel.js';
+import {
+	selectPageOrder,
+	selectPrintOddEvenPages,
+} from '~/utils/print-panel.js';
 
 inquirer.registerPrompt('press-to-continue', PressToContinue);
 
@@ -38,8 +41,9 @@ await inquirer.prompt({
 const temporaryPresetName = nanoid();
 await saveCurrentSettingsAsPreset({ presetName: temporaryPresetName });
 
-// Printing evenenen pages
-await selectPrintOddEvenPages({ even: true });
+// Printing odd pages in reverse
+await selectPrintOddEvenPages({ odd: true });
+await selectPageOrder({ reverse: true });
 await clickPrintButton();
 
 await inquirer.prompt({
@@ -50,10 +54,11 @@ await inquirer.prompt({
 	enter: true,
 });
 
-// Printing odd pages
+// Printing even pages
 await openPrintMenu();
 await selectPreset({ presetName: temporaryPresetName });
-await selectPrintOddEvenPages({ odd: true });
+await selectPrintOddEvenPages({ even: true });
+await selectPageOrder({ reverse: false });
 await clickPrintButton();
 
 // Cleanup
