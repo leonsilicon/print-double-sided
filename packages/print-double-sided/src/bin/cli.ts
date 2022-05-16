@@ -44,9 +44,8 @@ const numPagesToPrint = await getNumPagesToPrint();
 const temporaryPresetName = nanoid();
 await saveCurrentSettingsAsPreset({ presetName: temporaryPresetName });
 
-// Printing even pages in reverse
 await selectPrintOddEvenPages({ odd: true });
-await selectPageOrder({ reverse: true });
+await selectPageOrder({ reverse: false });
 await clickPrintButton();
 
 await inquirer.prompt({
@@ -57,19 +56,18 @@ await inquirer.prompt({
 	enter: true,
 });
 
-// Printing odd pages in reverse
 await openPrintMenu();
 await selectPreset({ presetName: temporaryPresetName });
 await selectPrintOddEvenPages({ even: true });
 await selectPageOrder({ reverse: false });
 await clickPrintButton();
 
-if (numPagesToPrint % 2 === 1) {
-	// Print an extra blank page if the number of pages is odd
-	execaSync('lp', [join(import.meta.url, '../../assets/blank.pdf')]);
-}
-
 // Cleanup
 await openPrintMenu();
 await deletePreset({ presetName: temporaryPresetName });
 await closePrintMenu();
+
+if (numPagesToPrint % 2 === 1) {
+	// Print an extra blank page if the number of pages is odd
+	execaSync('lp', [join(import.meta.url, '../../assets/blank.pdf')]);
+}
