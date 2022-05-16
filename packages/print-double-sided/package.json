@@ -27,6 +27,7 @@
 	"dependencies": {
 		"applescript-utils": "^0.1.20",
 		"commander": "^9.2.0",
+		"desm": "^1.2.0",
 		"execa": "^6.1.0",
 		"inquirer": "^8.2.4",
 		"inquirer-press-to-continue": "^1.1.2",

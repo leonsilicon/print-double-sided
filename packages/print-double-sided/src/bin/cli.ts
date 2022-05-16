@@ -1,9 +1,11 @@
 import { program } from 'commander';
+import { join } from 'desm';
 import { execaSync } from 'execa';
 import inquirer from 'inquirer';
 import PressToContinue from 'inquirer-press-to-continue';
 import { nanoid } from 'nanoid-nice';
 
+import { getNumPagesToPrint } from '~/utils/num-pages.js';
 import {
 	deletePreset,
 	saveCurrentSettingsAsPreset,
@@ -38,10 +40,11 @@ await inquirer.prompt({
 		'Customize the print settings until you are happy with them (but do NOT press Print!), then press `c` to continue...',
 });
 
+const numPagesToPrint = await getNumPagesToPrint();
 const temporaryPresetName = nanoid();
 await saveCurrentSettingsAsPreset({ presetName: temporaryPresetName });
 
-// Printing odd pages in reverse
+// Printing even pages in reverse
 await selectPrintOddEvenPages({ odd: true });
 await selectPageOrder({ reverse: true });
 await clickPrintButton();
@@ -54,12 +57,17 @@ await inquirer.prompt({
 	enter: true,
 });
 
-// Printing even pages
+// Printing odd pages in reverse
 await openPrintMenu();
 await selectPreset({ presetName: temporaryPresetName });
 await selectPrintOddEvenPages({ even: true });
 await selectPageOrder({ reverse: false });
 await clickPrintButton();
+
+if (numPagesToPrint % 2 === 1) {
+	// Print an extra blank page if the number of pages is odd
+	execaSync('lp', [join(import.meta.url, '../../assets/blank.pdf')]);
+}
 
 // Cleanup
 await openPrintMenu();

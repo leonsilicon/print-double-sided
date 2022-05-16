@@ -17,6 +17,7 @@ importers:
       '@types/inquirer': ^8.2.1
       applescript-utils: ^0.1.20
       commander: ^9.2.0
+      desm: ^1.2.0
       execa: ^6.1.0
       inquirer: ^8.2.4
       inquirer-press-to-continue: ^1.1.2
@@ -28,6 +29,7 @@ importers:
     dependencies:
       applescript-utils: 0.1.20
       commander: 9.2.0
+      desm: 1.2.0
       execa: 6.1.0
       inquirer: 8.2.4
       inquirer-press-to-continue: 1.1.2_inquirer@8.2.4
@@ -1977,7 +1979,6 @@ packages:
 
   /desm/1.2.0:
     resolution: {integrity: sha512-/sHgwtz8V4kzHc/cii4OTtpEssvYe/yDDlPnZyMP5wO5KXYGfUoh22n+8OMhepStjhq6o577SRgTrdfcRepDbw==}
-    dev: true
 
   /detect-indent/6.1.0:
     resolution: {integrity: sha512-reYkTUJAZb9gUuZ2RvVCNhVHdg62RHnJ7WJl8ftMi4diZ6NWlciOzQN88pUhSELEwflJht4oQDv0F0BMlwaYtA==}
