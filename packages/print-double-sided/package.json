@@ -14,16 +14,10 @@
 		"url": "https://leonzalion.com"
 	},
 	"type": "module",
-	"exports": "./src/index.ts",
 	"scripts": {
 		"preinstall": "pnpm build",
-		"prepare": "lion-git-hooks",
 		"build": "node-ts ./scripts/build.ts",
-		"start": "node-ts ./src/bin/cli.ts",
-		"test": "vitest run",
-		"lint": "eslint --cache --fix .",
-		"prettier": "prettier --write .",
-		"typecheck": "tsc --noEmit"
+		"start": "node-ts ./src/bin/cli.ts"
 	},
 	"devDependencies": {
 		"@types/inquirer": "^8.2.1",

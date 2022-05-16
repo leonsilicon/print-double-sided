@@ -38,8 +38,8 @@ await inquirer.prompt({
 const temporaryPresetName = nanoid();
 await saveCurrentSettingsAsPreset({ presetName: temporaryPresetName });
 
-// Printing odd pages
-await selectPrintOddEvenPages({ odd: true });
+// Printing evenenen pages
+await selectPrintOddEvenPages({ even: true });
 await clickPrintButton();
 
 await inquirer.prompt({
@@ -50,10 +50,10 @@ await inquirer.prompt({
 	enter: true,
 });
 
-// Printing even pages
+// Printing odd pages
 await openPrintMenu();
 await selectPreset({ presetName: temporaryPresetName });
-await selectPrintOddEvenPages({ even: true });
+await selectPrintOddEvenPages({ odd: true });
 await clickPrintButton();
 
 // Cleanup
