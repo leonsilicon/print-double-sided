@@ -23,8 +23,8 @@
 		"typecheck": "pnpm recursive run typecheck"
 	},
 	"devDependencies": {
-		"@leonzalion/configs": "latest",
-		"@types/node": "latest",
-		"typescript": "latest"
+		"@types/node": "^17.0.33",
+		"lionconfig": "^1.6.25",
+		"typescript": "^4.6.4"
 	}
 }
